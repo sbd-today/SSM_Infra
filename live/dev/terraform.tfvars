@@ -19,4 +19,4 @@ require_alb             = false
 reuse_SSM_log_group     = true
 ec2_ami_id              = "ami-0373414f0f6cc53a9"
 tag_app_name            = "bloginstanceweb"
-db_tag_app_name         = "blog-db"
+db_tag_app_name         = "mysql-db"

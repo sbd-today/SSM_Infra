@@ -9,11 +9,9 @@ fi
 
 check_answer(){
   identity=$(aws sts get-caller-identity)
-  echo $identity
-  GREEN='\033[0;32m'
-  NC='\033[0m'
+  #echo $identity
   printf "\n\n"
-  printf "You are connect to ${GREEN} $env [${account_id}] ${NC} account, Are you want to proceed? (Y/N)?"
+  printf "You are connect to [${account_id}] ${NC} account, Are you want to proceed? (Y/N)?"
   read answer
        if [ "$answer" != "${answer#[Yy]}" ] ;then
             echo "Ok"
@@ -24,16 +22,6 @@ check_answer(){
 
 account_id=$(aws sts get-caller-identity --query Account --output text)
 
-if [ "$account_id" = "381492122509" ]
-then
-  env="Development"
-elif [ "$account_id" = "211125741889" ]
-then
-  env="DevelopmentPlayground"
-elif [ "$account_id" = "100738197021" ]
-then
-  env="Production"
-fi
 check_answer
 
 
@@ -64,7 +52,7 @@ connectRDS(){
     esac
 
     for rds in $(aws rds describe-db-instances --query 'DBInstances[].DBInstanceArn' --region us-west-2 --output text); do
-      tags=$(aws rds list-tags-for-resource --resource-name $rds --query 'TagList[?Key==`app_name` && Value==`mysql_db`]' --output json)
+      tags=$(aws rds list-tags-for-resource --resource-name $rds --query 'TagList[?Key==`app_name` && Value==`mysql-db`]' --output json)
       if [[ $tags != "[]" ]]; then
           rds_id=$(aws rds describe-db-instances --query "DBInstances[?DBInstanceArn=='$rds'].Endpoint.Address" --region us-west-2 --output text)
 	  echo $rds_id
