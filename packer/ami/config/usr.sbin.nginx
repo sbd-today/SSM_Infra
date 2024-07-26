@@ -1,0 +1,35 @@
+include <tunables/global>
+
+/usr/sbin/nginx  {
+  include <abstractions/base>
+  include <abstractions/nameservice>
+  include <abstractions/openssl>
+  include <abstractions/web-data>
+
+  capability chown,
+  capability dac_override,
+  capability setgid,
+  capability setuid,
+
+  /etc/nginx/* r,
+  /etc/nginx/conf.d/ r,
+  /etc/nginx/mime.types r,
+  /etc/nginx/modules-enabled/ r,
+  /etc/nginx/sites-available/* r,
+  /etc/nginx/sites-enabled/* r,
+  /etc/ssl/openssl.cnf r,
+  /proc/sys/kernel/random/boot_id r,
+  /run/nginx.pid rw,
+  /usr/sbin/nginx r,
+  /usr/share/nginx/modules-available/* r,
+  /var/lib/nginx/body/ w,
+  /var/lib/nginx/body/* r,
+  /var/lib/nginx/fastcgi/ w,
+  /var/lib/nginx/proxy/ w,
+  /var/lib/nginx/scgi/ w,
+  /var/lib/nginx/uwsgi/ w,
+  /var/log/nginx/access.log w,
+  /var/log/nginx/error.log w,
+  /var/www/* r,
+  owner /etc/nginx/sites-enabled/ r,
+}

@@ -1,0 +1,1 @@
+echo "-a always,exit -F arch=b64 -S rename,rmdir,unlink,unlinkat,renameat -F auid>=500 -F auid!=-1 -F dir=/root/test/ -F key=delete"
