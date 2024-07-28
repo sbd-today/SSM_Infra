@@ -77,3 +77,25 @@ module "bloginstance_db" {
   rds_snapshot_identifier = var.rds_snapshot_identifier
   tagname                 = var.db_tag_app_name
 }
+
+resource "aws_cloudwatch_log_group" "va_log_group" {
+  log_group_class   = "STANDARD"
+  name              = "verified_access/nginx.sbd.today"
+  retention_in_days = 90
+}
+
+module "va_module" {
+  source                  = "../../modules/verified_access"
+  sg_ids                  = [module.ec2_instance.ec2_instance_sg_id]
+  app_domain              = var.app_domain
+  va_domain_cert_arn      = var.va_domain_cert_arn
+  network_interface_id    = module.ec2_instance.ec2_network_interface_id
+  va_log_cloudwatch_enabled = true
+  va_log_cloudwatch_log_group_id = aws_cloudwatch_log_group.va_log_group.id
+  va_group_policy_document = <<-EOT
+permit(principal,action,resource)
+when {
+    context.dev_bloginstance.user.email.address like "*@sbd.today"
+};
+EOT
+}

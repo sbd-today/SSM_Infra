@@ -102,3 +102,17 @@ variable "tag_app_name" {
 variable "db_tag_app_name" {
   type = string
 }
+
+variable "app_domain" {
+  type = string
+}
+
+variable "va_domain_cert_arn" {
+  type = string
+}
+
+# variable "va_policy" {
+#   type = string
+#   nullable = false
+  
+# }

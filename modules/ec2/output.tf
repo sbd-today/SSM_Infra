@@ -12,3 +12,7 @@ output "instance_id" {
 output "ec2_alb" {
   value = (var.require_alb == true ? try(aws_lb.elb[0].dns_name) : null)
 }
+
+output "ec2_network_interface_id" {
+  value = try(aws_instance.ec2-web.primary_network_interface_id,null)
+}

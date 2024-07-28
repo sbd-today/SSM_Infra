@@ -3,7 +3,13 @@ locals {
   resource_prefix = "${var.project_name}-${var.env_name}"
 }
 
-
+data "aws_availability_zones" "available_zones" {
+  state = "available"
+  filter {
+    name   = "region-name"
+    values = ["${var.region}"]
+  }
+}
 resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   instance_tenancy     = "default"
@@ -21,7 +27,7 @@ resource "aws_subnet" "vpc_subnet_pub_01" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.pubsub1cidr
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2a"
+  availability_zone       = data.aws_availability_zones.available_zones.names[0]
 
   tags = {
     Name = "${local.resource_prefix}-public-subnet-1"
@@ -32,7 +38,7 @@ resource "aws_subnet" "vpc_subnet_pub_02" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.pubsub2cidr
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2b"
+  availability_zone       = data.aws_availability_zones.available_zones.names[1]
 
   tags = {
     Name = "${local.resource_prefix}-public-subnet-2"
@@ -43,7 +49,7 @@ resource "aws_subnet" "vpc_subnet_pub_03" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.pubsub3cidr
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2b"
+  availability_zone       = data.aws_availability_zones.available_zones.names[1]
 
   tags = {
     Name = "${local.resource_prefix}-public-subnet-3"
@@ -55,7 +61,7 @@ resource "aws_subnet" "vpc_subnet_priv_01" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.prisub1cidr
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2a"
+  availability_zone       = data.aws_availability_zones.available_zones.names[0]
 
   tags = {
     Name = "${local.resource_prefix}-private-subnet-1"
@@ -66,7 +72,7 @@ resource "aws_subnet" "vpc_subnet_priv_02" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.prisub2cidr
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2b"
+  availability_zone       = data.aws_availability_zones.available_zones.names[1]
 
   tags = {
     Name = "${local.resource_prefix}-private-subnet-2"
@@ -77,7 +83,7 @@ resource "aws_subnet" "vpc_subnet_priv_03" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.prisub3cidr
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2b"
+  availability_zone       = data.aws_availability_zones.available_zones.names[1]
 
   tags = {
     Name = "${local.resource_prefix}-private-subnet-3"

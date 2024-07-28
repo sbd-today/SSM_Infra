@@ -10,7 +10,7 @@ packer {
 source "amazon-ebs" "nginix-ubuntu" {
   ami_name      = "nginix-ubuntu-base-{{timestamp}}"
   instance_type = "t2.small"
-  region        = "us-west-2"
+  region        = "us-west-1"
   
   source_ami_filter {
     filters = {
